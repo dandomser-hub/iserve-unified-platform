@@ -1,0 +1,1 @@
+function e(n){return n?new Date(n).toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"}):"—"}function t(n){return n?new Date(n).toLocaleString("en-PH",{year:"numeric",month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}):"—"}function o(n){return new Intl.NumberFormat("en-PH",{style:"currency",currency:"PHP"}).format(n)}export{o as a,e as b,t as f};

@@ -1,0 +1,97 @@
+name: Repository quality
+
+on:
+  pull_request:
+    branches: [mod-02]
+  push:
+    branches: [mod-02]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Check quality contracts
+        run: npm run contract:check
+
+      - name: Check MVP foundation contract
+        run: npm run mvp:contract
+
+      - name: Type-check and build
+        run: npm run build
+
+      - name: Enforce bundle budget
+        run: npm run bundle:check
+
+  mvp-foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: barangay_iserve_test
+      DB_USERNAME: barangay_iserve
+      DB_PASSWORD: test-only
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: barangay_iserve_test
+          POSTGRES_USER: barangay_iserve
+          POSTGRES_PASSWORD: test-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    defaults:
+      run:
+        working-directory: apps/mvp
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Use PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_pgsql
+          coverage: none
+
+      - name: Validate Composer manifest
+        run: composer validate --strict
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare application
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Test PostgreSQL migrations and seed strategy
+        run: php artisan migrate:fresh --seed --force
+
+      - name: Run Laravel tests
+        run: php artisan test

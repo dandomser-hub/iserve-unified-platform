@@ -1,0 +1,237 @@
+import type { DocumentRequest, IssuedDocument, DocumentTemplate } from '@/types/document';
+
+export const mockDocumentRequests: DocumentRequest[] = [
+  {
+    id: 'DOC001', requestNo: 'REQ-2024-001', residentId: 'R001', residentName: 'Dela Cruz, Juan S.',
+    documentType: 'Barangay Clearance', purpose: 'Employment requirement',
+    requirements: [
+      { label: 'Valid ID', required: true, submitted: true },
+      { label: 'Proof of Residence', required: true, submitted: true },
+    ],
+    feeReference: 'ORD-2023-01', feeAmount: 50,
+    hasBlotterFlag: false, hasKPFlag: false,
+    status: 'Released', assignedTo: 'Barangay Secretary',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-01T08:00:00', updatedAt: '2024-06-02T10:00:00',
+    referenceNo: 'BC-2024-0001', verificationCode: 'VRF-BC-001XYZ',
+    releasedAt: '2024-06-02T10:00:00', releasedBy: 'Secretary Santos',
+    workflowHistory: [
+      { id: 'WF001', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-01T08:00:00' },
+      { id: 'WF002', fromStatus: 'Draft', toStatus: 'For Validation', action: 'Submitted for validation', performedBy: 'Secretary Santos', performedAt: '2024-06-01T08:30:00' },
+      { id: 'WF003', fromStatus: 'For Validation', toStatus: 'For Approval', action: 'Validated by Secretary', performedBy: 'Secretary Santos', performedAt: '2024-06-01T09:00:00' },
+      { id: 'WF004', fromStatus: 'For Approval', toStatus: 'Approved', action: 'Approved by Punong Barangay', performedBy: 'Hon. Reyes', performedAt: '2024-06-01T14:00:00' },
+      { id: 'WF005', fromStatus: 'Approved', toStatus: 'For Release', action: 'Prepared for release', performedBy: 'Secretary Santos', performedAt: '2024-06-02T09:00:00' },
+      { id: 'WF006', fromStatus: 'For Release', toStatus: 'Released', action: 'Released to requester', performedBy: 'Secretary Santos', performedAt: '2024-06-02T10:00:00' },
+    ],
+  },
+  {
+    id: 'DOC002', requestNo: 'REQ-2024-002', residentId: 'R004', residentName: 'Mendoza, Lourdes G.',
+    documentType: 'Certificate of Indigency', purpose: 'PhilHealth requirement',
+    requirements: [
+      { label: 'Valid ID', required: true, submitted: true },
+      { label: 'Proof of Indigency (if available)', required: false, submitted: false },
+    ],
+    feeReference: 'EXEMPT-001', feeAmount: 0,
+    hasBlotterFlag: false, hasKPFlag: false,
+    status: 'For Approval', assignedTo: 'Punong Barangay',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-10T09:00:00', updatedAt: '2024-06-10T11:00:00',
+    workflowHistory: [
+      { id: 'WF007', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-10T09:00:00' },
+      { id: 'WF008', fromStatus: 'Draft', toStatus: 'For Validation', action: 'Submitted for validation', performedBy: 'Secretary Santos', performedAt: '2024-06-10T09:15:00' },
+      { id: 'WF009', fromStatus: 'For Validation', toStatus: 'For Approval', action: 'Validated', performedBy: 'Secretary Santos', performedAt: '2024-06-10T11:00:00' },
+    ],
+  },
+  {
+    id: 'DOC003', requestNo: 'REQ-2024-003', residentId: 'R009', residentName: 'Macaraig, Fernando R.',
+    documentType: 'First Time Jobseeker Certification', purpose: 'Job application',
+    requirements: [
+      { label: 'Barangay Residency Proof', required: true, submitted: true },
+      { label: 'Affidavit of First Time Jobseeker', required: true, submitted: false },
+    ],
+    feeReference: 'NO-FEE', feeAmount: 0,
+    hasBlotterFlag: false, hasKPFlag: false,
+    status: 'For Validation', assignedTo: 'Barangay Secretary',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-12T10:30:00', updatedAt: '2024-06-12T10:30:00',
+    workflowHistory: [
+      { id: 'WF010', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-12T10:30:00' },
+      { id: 'WF011', fromStatus: 'Draft', toStatus: 'For Validation', action: 'Submitted for validation', performedBy: 'Secretary Santos', performedAt: '2024-06-12T10:35:00' },
+    ],
+  },
+  {
+    id: 'DOC004', requestNo: 'REQ-2024-004', residentId: 'R015', residentName: 'Tolentino, Kristine L.',
+    documentType: 'Certificate of Residency', purpose: 'School enrollment',
+    requirements: [
+      { label: 'Valid ID', required: true, submitted: true },
+    ],
+    feeAmount: 30,
+    hasBlotterFlag: false, hasKPFlag: false,
+    status: 'Draft', assignedTo: 'Barangay Secretary',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-13T08:00:00', updatedAt: '2024-06-13T08:00:00',
+    workflowHistory: [
+      { id: 'WF012', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-13T08:00:00' },
+    ],
+  },
+  {
+    id: 'DOC005', requestNo: 'REQ-2024-005', residentId: 'R007', residentName: 'Aquino, Pedro L.',
+    documentType: 'Certificate of Good Moral Character', purpose: 'NBI clearance requirement',
+    requirements: [
+      { label: 'Valid ID', required: true, submitted: true },
+      { label: 'Community Tax Certificate', required: false, submitted: true },
+    ],
+    feeAmount: 50,
+    hasBlotterFlag: false, hasKPFlag: false,
+    status: 'Approved', assignedTo: 'Barangay Secretary',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-08T09:00:00', updatedAt: '2024-06-09T14:00:00',
+    workflowHistory: [
+      { id: 'WF013', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-08T09:00:00' },
+      { id: 'WF014', fromStatus: 'Draft', toStatus: 'For Validation', action: 'Submitted', performedBy: 'Secretary Santos', performedAt: '2024-06-08T09:30:00' },
+      { id: 'WF015', fromStatus: 'For Validation', toStatus: 'For Approval', action: 'Validated', performedBy: 'Secretary Santos', performedAt: '2024-06-08T10:00:00' },
+      { id: 'WF016', fromStatus: 'For Approval', toStatus: 'Approved', action: 'Approved by PB', performedBy: 'Hon. Reyes', performedAt: '2024-06-09T14:00:00' },
+    ],
+  },
+  {
+    id: 'DOC006', requestNo: 'REQ-2024-006', residentId: 'R012', residentName: 'Pascual, Maricel C.',
+    documentType: 'Certificate of Indigency', purpose: 'Medical assistance',
+    requirements: [
+      { label: 'Valid ID', required: true, submitted: true },
+    ],
+    feeAmount: 0,
+    hasBlotterFlag: false, hasKPFlag: false,
+    status: 'Released',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-05T10:00:00', updatedAt: '2024-06-05T16:00:00',
+    referenceNo: 'CI-2024-0002', verificationCode: 'VRF-CI-002ABC',
+    releasedAt: '2024-06-05T16:00:00', releasedBy: 'Secretary Santos',
+    workflowHistory: [
+      { id: 'WF017', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-05T10:00:00' },
+      { id: 'WF018', fromStatus: 'Draft', toStatus: 'For Validation', action: 'Submitted', performedBy: 'Secretary Santos', performedAt: '2024-06-05T10:05:00' },
+      { id: 'WF019', fromStatus: 'For Validation', toStatus: 'For Approval', action: 'Validated', performedBy: 'Secretary Santos', performedAt: '2024-06-05T10:30:00' },
+      { id: 'WF020', fromStatus: 'For Approval', toStatus: 'Approved', action: 'Approved', performedBy: 'Hon. Reyes', performedAt: '2024-06-05T14:00:00' },
+      { id: 'WF021', fromStatus: 'Approved', toStatus: 'For Release', action: 'Prepared', performedBy: 'Secretary Santos', performedAt: '2024-06-05T15:30:00' },
+      { id: 'WF022', fromStatus: 'For Release', toStatus: 'Released', action: 'Released', performedBy: 'Secretary Santos', performedAt: '2024-06-05T16:00:00' },
+    ],
+  },
+  {
+    id: 'DOC007', requestNo: 'REQ-2024-007', residentId: 'R020', residentName: 'Soriano, Gloria H.',
+    documentType: 'Business Clearance', purpose: 'Annual business renewal',
+    requirements: [
+      { label: 'Business Registration', required: true, submitted: true },
+      { label: 'Barangay Clearance (previous year)', required: false, submitted: true },
+      { label: 'Valid ID of Owner', required: true, submitted: true },
+    ],
+    feeAmount: 200,
+    hasBlotterFlag: false, hasKPFlag: false,
+    status: 'For Validation',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-14T08:30:00', updatedAt: '2024-06-14T08:30:00',
+    workflowHistory: [
+      { id: 'WF023', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-14T08:30:00' },
+      { id: 'WF024', fromStatus: 'Draft', toStatus: 'For Validation', action: 'Submitted', performedBy: 'Secretary Santos', performedAt: '2024-06-14T08:35:00' },
+    ],
+  },
+  {
+    id: 'DOC008', requestNo: 'REQ-2024-008', residentId: 'R013', residentName: 'Espiritu, Roberto N.',
+    documentType: 'Barangay Clearance', purpose: 'Loan application',
+    requirements: [
+      { label: 'Valid ID', required: true, submitted: true },
+    ],
+    feeAmount: 50, hasBlotterFlag: false, hasKPFlag: false,
+    status: 'Returned',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-11T09:00:00', updatedAt: '2024-06-11T15:00:00',
+    remarks: 'Returned: Missing community tax certificate',
+    workflowHistory: [
+      { id: 'WF025', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-11T09:00:00' },
+      { id: 'WF026', fromStatus: 'Draft', toStatus: 'For Validation', action: 'Submitted', performedBy: 'Secretary Santos', performedAt: '2024-06-11T09:05:00' },
+      { id: 'WF027', fromStatus: 'For Validation', toStatus: 'Returned', action: 'Returned - incomplete requirements', performedBy: 'Secretary Santos', performedAt: '2024-06-11T15:00:00', remarks: 'Missing community tax certificate' },
+    ],
+  },
+  {
+    id: 'DOC009', requestNo: 'REQ-2024-009', residentId: 'R029', residentName: 'Palma, Crisanto A.',
+    documentType: 'Certificate of Unemployment', purpose: 'DOLE Jobstart application',
+    requirements: [
+      { label: 'Valid ID', required: true, submitted: true },
+      { label: 'Affidavit of Unemployment', required: true, submitted: false },
+    ],
+    feeAmount: 30, hasBlotterFlag: false, hasKPFlag: false,
+    status: 'Draft',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-15T10:00:00', updatedAt: '2024-06-15T10:00:00',
+    workflowHistory: [
+      { id: 'WF028', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-15T10:00:00' },
+    ],
+  },
+  {
+    id: 'DOC010', requestNo: 'REQ-2024-010', residentId: 'R030', residentName: 'Umali, Analiza B.',
+    documentType: 'Certificate of Low Income / No Income', purpose: 'Scholarship requirement',
+    requirements: [
+      { label: 'Valid ID', required: true, submitted: true },
+      { label: 'Certificate of Enrollment', required: false, submitted: true },
+    ],
+    feeAmount: 0,
+    hasBlotterFlag: false, hasKPFlag: false,
+    status: 'Approved',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-10T13:00:00', updatedAt: '2024-06-11T10:00:00',
+    workflowHistory: [
+      { id: 'WF029', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-10T13:00:00' },
+      { id: 'WF030', fromStatus: 'Draft', toStatus: 'For Validation', action: 'Submitted', performedBy: 'Secretary Santos', performedAt: '2024-06-10T13:10:00' },
+      { id: 'WF031', fromStatus: 'For Validation', toStatus: 'For Approval', action: 'Validated', performedBy: 'Secretary Santos', performedAt: '2024-06-10T14:00:00' },
+      { id: 'WF032', fromStatus: 'For Approval', toStatus: 'Approved', action: 'Approved by PB', performedBy: 'Hon. Reyes', performedAt: '2024-06-11T10:00:00' },
+    ],
+  },
+  {
+    id: 'DOC011', requestNo: 'REQ-2024-011', residentId: 'R010', residentName: 'Macaraig, Rosario D.',
+    documentType: 'Certificate of Appearance', purpose: 'Personal appearance for legal purposes',
+    requirements: [
+      { label: 'Valid ID', required: true, submitted: true },
+    ],
+    feeAmount: 30, hasBlotterFlag: false, hasKPFlag: false,
+    status: 'Released',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-06T11:00:00', updatedAt: '2024-06-06T15:30:00',
+    referenceNo: 'CA-2024-0003', verificationCode: 'VRF-CA-003DEF',
+    releasedAt: '2024-06-06T15:30:00', releasedBy: 'Secretary Santos',
+    workflowHistory: [
+      { id: 'WF033', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-06T11:00:00' },
+      { id: 'WF034', fromStatus: 'Draft', toStatus: 'For Validation', action: 'Submitted', performedBy: 'Secretary Santos', performedAt: '2024-06-06T11:05:00' },
+      { id: 'WF035', fromStatus: 'For Validation', toStatus: 'For Approval', action: 'Validated', performedBy: 'Secretary Santos', performedAt: '2024-06-06T11:30:00' },
+      { id: 'WF036', fromStatus: 'For Approval', toStatus: 'Approved', action: 'Approved', performedBy: 'Hon. Reyes', performedAt: '2024-06-06T14:00:00' },
+      { id: 'WF037', fromStatus: 'Approved', toStatus: 'For Release', action: 'Prepared', performedBy: 'Secretary Santos', performedAt: '2024-06-06T15:00:00' },
+      { id: 'WF038', fromStatus: 'For Release', toStatus: 'Released', action: 'Released', performedBy: 'Secretary Santos', performedAt: '2024-06-06T15:30:00' },
+    ],
+  },
+  {
+    id: 'DOC012', requestNo: 'REQ-2024-012', residentId: 'R005', residentName: 'Villanueva, Ricardo B.',
+    documentType: 'Blotter Certification', purpose: 'Insurance claim documentation',
+    requirements: [
+      { label: 'Blotter Incident Reference', required: true, submitted: true },
+      { label: 'Valid ID', required: true, submitted: true },
+    ],
+    feeAmount: 75, hasBlotterFlag: true, hasKPFlag: false,
+    status: 'For Approval',
+    createdBy: 'Secretary Santos', createdAt: '2024-06-13T14:00:00', updatedAt: '2024-06-13T15:30:00',
+    workflowHistory: [
+      { id: 'WF039', toStatus: 'Draft', action: 'Created', performedBy: 'Secretary Santos', performedAt: '2024-06-13T14:00:00' },
+      { id: 'WF040', fromStatus: 'Draft', toStatus: 'For Validation', action: 'Submitted', performedBy: 'Secretary Santos', performedAt: '2024-06-13T14:05:00' },
+      { id: 'WF041', fromStatus: 'For Validation', toStatus: 'For Approval', action: 'Validated - Blotter confirmed', performedBy: 'Secretary Santos', performedAt: '2024-06-13T15:30:00' },
+    ],
+  },
+];
+
+export const mockIssuedDocuments: IssuedDocument[] = [
+  { id: 'ISS001', requestId: 'DOC001', requestNo: 'REQ-2024-001', residentId: 'R001', residentName: 'Dela Cruz, Juan S.', documentType: 'Barangay Clearance', referenceNo: 'BC-2024-0001', verificationCode: 'VRF-BC-001XYZ', issuedAt: '2024-06-02T10:00:00', issuedBy: 'Secretary Santos', isRevoked: false },
+  { id: 'ISS002', requestId: 'DOC006', requestNo: 'REQ-2024-006', residentId: 'R012', residentName: 'Pascual, Maricel C.', documentType: 'Certificate of Indigency', referenceNo: 'CI-2024-0002', verificationCode: 'VRF-CI-002ABC', issuedAt: '2024-06-05T16:00:00', issuedBy: 'Secretary Santos', isRevoked: false },
+  { id: 'ISS003', requestId: 'DOC011', requestNo: 'REQ-2024-011', residentId: 'R010', residentName: 'Macaraig, Rosario D.', documentType: 'Certificate of Appearance', referenceNo: 'CA-2024-0003', verificationCode: 'VRF-CA-003DEF', issuedAt: '2024-06-06T15:30:00', issuedBy: 'Secretary Santos', isRevoked: false },
+  { id: 'ISS004', requestId: 'DOC004B', requestNo: 'REQ-2024-004B', residentId: 'R002', residentName: 'Dela Cruz, Maria R.', documentType: 'Certificate of Residency', referenceNo: 'CR-2024-0004', verificationCode: 'VRF-CR-004GHI', issuedAt: '2024-05-20T14:00:00', issuedBy: 'Secretary Santos', isRevoked: false },
+  { id: 'ISS005', requestId: 'DOC005B', requestNo: 'REQ-2024-005B', residentId: 'R019', residentName: 'Soriano, Enrique P.', documentType: 'Barangay Clearance', referenceNo: 'BC-2024-0005', verificationCode: 'VRF-BC-005JKL', issuedAt: '2024-05-25T11:00:00', issuedBy: 'Secretary Santos', isRevoked: false },
+  { id: 'ISS006', requestId: 'DOC006B', requestNo: 'REQ-2024-006B', residentId: 'R017', residentName: 'Buenaventura, Teresita U.', documentType: 'Certificate of Indigency', referenceNo: 'CI-2024-0006', verificationCode: 'VRF-CI-006MNO', issuedAt: '2024-05-28T09:30:00', issuedBy: 'Secretary Santos', isRevoked: false },
+  { id: 'ISS007', requestId: 'DOC007B', requestNo: 'REQ-2024-007B', residentId: 'R008', residentName: 'Aquino, Carmen S.', documentType: 'Certificate of Good Moral Character', referenceNo: 'CGMC-2024-0007', verificationCode: 'VRF-CGMC-007PQR', issuedAt: '2024-06-01T16:00:00', issuedBy: 'Secretary Santos', isRevoked: false },
+  { id: 'ISS008', requestId: 'DOC008B', requestNo: 'REQ-2024-008B', residentId: 'R021', residentName: 'Ramos, Benedicto L.', documentType: 'First Time Jobseeker Certification', referenceNo: 'FTJC-2024-0008', verificationCode: 'VRF-FTJC-008STU', issuedAt: '2024-06-03T10:30:00', issuedBy: 'Secretary Santos', isRevoked: false },
+];
+
+export const mockDocumentTemplates: DocumentTemplate[] = [
+  { id: 'TPL001', documentType: 'Barangay Clearance', version: '2024-v2', isActive: true, variables: ['{{resident_name}}', '{{address}}', '{{purpose}}', '{{date_issued}}', '{{reference_no}}', '{{punong_barangay}}'], lastUpdatedBy: 'Secretary Santos', lastUpdatedAt: '2024-01-15T09:00:00' },
+  { id: 'TPL002', documentType: 'Certificate of Residency', version: '2024-v1', isActive: true, variables: ['{{resident_name}}', '{{address}}', '{{purok}}', '{{years_resident}}', '{{purpose}}', '{{date_issued}}', '{{reference_no}}', '{{punong_barangay}}'], lastUpdatedBy: 'Secretary Santos', lastUpdatedAt: '2024-01-15T09:00:00' },
+  { id: 'TPL003', documentType: 'Certificate of Indigency', version: '2024-v1', isActive: true, variables: ['{{resident_name}}', '{{address}}', '{{purpose}}', '{{date_issued}}', '{{reference_no}}', '{{punong_barangay}}'], lastUpdatedBy: 'Secretary Santos', lastUpdatedAt: '2024-01-15T09:00:00' },
+  { id: 'TPL004', documentType: 'Certificate of Good Moral Character', version: '2024-v1', isActive: true, variables: ['{{resident_name}}', '{{address}}', '{{purpose}}', '{{date_issued}}', '{{reference_no}}', '{{punong_barangay}}'], lastUpdatedBy: 'Secretary Santos', lastUpdatedAt: '2024-01-15T09:00:00' },
+  { id: 'TPL005', documentType: 'First Time Jobseeker Certification', version: '2024-v2', isActive: true, variables: ['{{resident_name}}', '{{address}}', '{{date_issued}}', '{{reference_no}}', '{{punong_barangay}}'], lastUpdatedBy: 'Secretary Santos', lastUpdatedAt: '2024-03-01T09:00:00' },
+  { id: 'TPL006', documentType: 'Business Clearance', version: '2024-v1', isActive: true, variables: ['{{business_name}}', '{{owner_name}}', '{{address}}', '{{business_type}}', '{{date_issued}}', '{{reference_no}}', '{{punong_barangay}}'], lastUpdatedBy: 'Secretary Santos', lastUpdatedAt: '2024-01-15T09:00:00' },
+  { id: 'TPL007', documentType: 'Certificate of Unemployment', version: '2024-v1', isActive: true, variables: ['{{resident_name}}', '{{address}}', '{{date_issued}}', '{{reference_no}}', '{{punong_barangay}}'], lastUpdatedBy: 'Secretary Santos', lastUpdatedAt: '2024-01-15T09:00:00' },
+  { id: 'TPL008', documentType: 'Certificate of Low Income / No Income', version: '2024-v1', isActive: true, variables: ['{{resident_name}}', '{{address}}', '{{income_description}}', '{{purpose}}', '{{date_issued}}', '{{reference_no}}', '{{punong_barangay}}'], lastUpdatedBy: 'Secretary Santos', lastUpdatedAt: '2024-01-15T09:00:00' },
+  { id: 'TPL009', documentType: 'Blotter Certification', version: '2024-v1', isActive: true, variables: ['{{requester_name}}', '{{incident_no}}', '{{incident_date}}', '{{incident_type}}', '{{date_issued}}', '{{reference_no}}', '{{punong_barangay}}'], lastUpdatedBy: 'Secretary Santos', lastUpdatedAt: '2024-01-15T09:00:00' },
+  { id: 'TPL010', documentType: 'KP Certification', version: '2024-v1', isActive: true, variables: ['{{complainant}}', '{{respondent}}', '{{case_no}}', '{{status}}', '{{date_issued}}', '{{reference_no}}', '{{punong_barangay}}'], lastUpdatedBy: 'Secretary Santos', lastUpdatedAt: '2024-01-15T09:00:00' },
+];
